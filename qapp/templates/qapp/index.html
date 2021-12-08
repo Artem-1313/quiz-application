@@ -1,0 +1,45 @@
+{% extends 'qapp/base.html'%}
+
+{% block content %}
+
+<hr>
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
+<!--  Launch demo modal-->
+<!--</button>-->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Розпочати тест?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ні</button>
+        <button type="button" class="btn btn-success" id="start-quiz">Так</button>
+      </div>
+    </div>
+  </div>
+</div>
+<h1>Список тестів</h1>
+{% for i in object_list %}
+<div>
+<button
+        class="btn btn-link btn-modal"
+        data-id="{{ i.id }}" data-quiz="{{ i.name }}"
+        data-description="{{ i.description}}"
+        data-bs-target="#exampleModal"
+        data-bs-toggle="modal">
+ <h5>{{ forloop.counter }}. {{ i.name }}</h5>
+</button>
+</div>
+{% endfor %}
+{{ object.name }}
+
+
+
+{% endblock content %}
