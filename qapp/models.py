@@ -13,7 +13,7 @@ class Quiz(models.Model):
         return f"{self.name} {self.description}"
 
     def get_questions(self):
-        return f"{self.questions.all()}"
+        return self.questions.all()
 
     class Meta:
         verbose_name_plural = 'Тест'
@@ -25,10 +25,10 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
 
     def __str__(self):
-        return f"{self.question}"
+        return self.question
 
     def get_answers(self):
-        return f"{self.answers.all()}"
+        return self.answers.all()
 
     class Meta:
         verbose_name_plural = 'Питання'

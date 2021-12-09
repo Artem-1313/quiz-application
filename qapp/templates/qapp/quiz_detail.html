@@ -5,5 +5,39 @@
 {% for q in object.get_questions %}
 {{ q }}
 {% endfor %}
+<hr>
+<form action="/action_page.php">
+  <p>Please select your favorite Web language:</p>
+  <input type="radio" id="html" name="fav_language" value="HTML">
+  <label for="html">HTML</label><br>
+  <input type="radio" id="css" name="fav_language" value="CSS">
+  <label for="css">CSS</label><br>
+  <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+  <label for="javascript">JavaScript</label>
+  <input type="submit" value="Submit">
+</form>
+<form>
+	{% csrf_token %}
+	
+{% for questions_answers in dict_questions_answers %}
+	{% for key,value in questions_answers.items %}
+		<div class="mb-2">
+			{{ key }}
+		</div> 
+		
+			{% for a in value %}
+			
 
+				<input type="radio" name="{{ a }}" id="{{ a }}" value="{{ a }}">
+					<label>{{ a }}</label>
+			
+
+			{% endfor %}
+		
+		
+	{% endfor %}
+{% endfor %}
+
+<button type="submit" class="btn btn-primary">OK</button>
+</form>
 {% endblock content %}
