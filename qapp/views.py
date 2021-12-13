@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .forms import addQuiz
 from django.views.generic import ListView, DetailView
 from .models import *
+from django.http import JsonResponse
+
 # Create your views here.
 
 class QuizList(ListView):
@@ -11,6 +13,7 @@ class QuizList(ListView):
 
     def get_queryset(self):
         return Quiz.objects.all()
+
 
 class QuizDetail(DetailView):
     model = Quiz
@@ -22,14 +25,30 @@ class QuizDetail(DetailView):
         quiz = Quiz.objects.get(id=self.kwargs['pk'])
         questions_list = []
         for q in quiz.get_questions():
-        	answers = []
-        	for a in q.get_answers():
-        		answers.append(str(a))
-        	questions_list.append({str(q):answers})
+            answers = []
+            for a in q.get_answers():
+                answers.append(str(a))
+            questions_list.append({str(q): answers})
 
+        # print("request is", self.request.POST)
         context['dict_questions_answers'] = questions_list
         return context
-def index(request):
 
+#<form action={% url 'process' %}  method="POST">
+def test(request):
+    dict = request.POST
+    dict._mutable = True
+    dict.pop('csrfmiddlewaretoken')
+    #print(dict)
+    for k, v in dict.items():
+        print(v)
+        for q in Question.objects.filter(question=k):
+            for i in q.get_right_answer():
+                print("is_right",i)
+                if str(i) == v:
+                    print(True)
+                else:
+                    print(False)
 
-    return render(request,  "qapp/index.html")
+    #return render(request, "qapp/index.html")
+    return JsonResponse({"test":"works"})

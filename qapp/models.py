@@ -15,6 +15,8 @@ class Quiz(models.Model):
     def get_questions(self):
         return self.questions.all()
 
+
+
     class Meta:
         verbose_name_plural = 'Тест'
 
@@ -29,6 +31,9 @@ class Question(models.Model):
 
     def get_answers(self):
         return self.answers.all()
+
+    def get_right_answer(self):
+        return self.answers.filter(is_right=True).all()
 
     class Meta:
         verbose_name_plural = 'Питання'
