@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from .models import *
 from django.http import JsonResponse
 
+
 # Create your views here.
 
 class QuizList(ListView):
@@ -34,21 +35,23 @@ class QuizDetail(DetailView):
         context['dict_questions_answers'] = questions_list
         return context
 
-#<form action={% url 'process' %}  method="POST">
+
 def test(request):
     dict = request.POST
     dict._mutable = True
     dict.pop('csrfmiddlewaretoken')
-    #print(dict)
+    # print(dict)
+    result = []
     for k, v in dict.items():
-        print(v)
+        if v == "":
+            result.append({k: "not answer"})
+            continue
+
         for q in Question.objects.filter(question=k):
             for i in q.get_right_answer():
-                print("is_right",i)
                 if str(i) == v:
-                    print(True)
+                    result.append({q.question: {"is right": True, "answer": v}})
                 else:
-                    print(False)
-
-    #return render(request, "qapp/index.html")
-    return JsonResponse({"test":"works"})
+                    result.append({q.question: {"is right": False, "answer": v}})
+    print(result)
+    return JsonResponse({"test": result})

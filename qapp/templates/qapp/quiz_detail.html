@@ -5,7 +5,7 @@
 
 <hr>
 
-<form method="post" action="{% url 'test' %}">
+<form method="post" action="{% url 'test' %}" id="quiz-form">
 	{% csrf_token %}
 	
 {% for questions_answers in dict_questions_answers %}
@@ -18,7 +18,7 @@
 			{% for a in value %}
 			<div>
 
-				<input type="radio" name="{{ key }}" id="{{ a }}" value="{{ a }}">
+				<input type="radio" name="{{ key }}" id="{{ a }}" value="{{ a }}" class="ans">
 					<label>{{ a }}</label>
 			</div>
 			
@@ -30,4 +30,46 @@
 
 <button type="submit" class="btn btn-primary">OK</button>
 </form>
+
+<script>
+    var url = window.location.origin
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')
+	var data = {}
+	data['csrfmiddlewaretoken'] = csrf[0].value
+	var quiz_form = document.getElementById('quiz-form');
+	var elem = [...document.getElementsByClassName('ans')];
+
+	const sendData = () =>{
+	elem.forEach(el => {
+	if (el.checked){
+	data[el.name] = el.value;
+	} else {
+	if (!data[el.name]) {
+                data[el.name] = null
+            }
+	}
+
+
+	})
+console.log(data)
+	$.ajax({
+	 type:'POST',
+	 url: `${url}/quiz/test/`,
+	 data: data,
+	 success:function (response){
+	 console.log(response)
+	 },
+	 error: function (err){
+	 console.log(err)
+	 }
+
+	})
+}
+	quiz_form.addEventListener('submit', e =>{
+	e.preventDefault()
+
+	sendData()
+	})
+
+</script>
 {% endblock content %}
