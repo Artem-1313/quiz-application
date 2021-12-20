@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<hr>
+
 <!-- Button trigger modal -->
 <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
 <!--  Launch demo modal-->
@@ -25,6 +25,7 @@
     </div>
   </div>
 </div>
+<div class="container">
 <h1>Список тестів</h1>
 {% for i in object_list %}
 <div>
@@ -38,8 +39,10 @@
 </button>
 </div>
 {% endfor %}
+
 {{ object.name }}
 
 
 
 {% endblock content %}
+  </div>

@@ -40,18 +40,21 @@ def test(request):
     dict = request.POST
     dict._mutable = True
     dict.pop('csrfmiddlewaretoken')
-    # print(dict)
-    result = []
-    for k, v in dict.items():
-        if v == "":
-            result.append({k: "not answer"})
-            continue
 
-        for q in Question.objects.filter(question=k):
-            for i in q.get_right_answer():
-                if str(i) == v:
-                    result.append({q.question: {"is right": True, "answer": v}})
-                else:
-                    result.append({q.question: {"is right": False, "answer": v}})
+    result = []
+    for question, answers in dict.items():
+
+        for q in Question.objects.filter(question=question):
+            correct_ans=q.get_right_answer()
+            if answers == "":
+                result.append({question: {"not_answer": True, "correct_ans": correct_ans}})
+
+
+                continue
+            if correct_ans == answers:
+                    result.append({question: {"is_right": True, "answer": answers,  "correct_ans":answers}})
+            else:
+                    result.append({question: {"is_right": False, "answer": answers, "correct_ans": correct_ans }})
+
     print(result)
     return JsonResponse({"test": result})
