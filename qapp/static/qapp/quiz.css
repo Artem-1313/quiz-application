@@ -1,0 +1,18 @@
+.not-ans{
+  background-color: red;
+}
+
+.correct_ans {
+  background-color: greenyellow;
+}
+
+.finalDiv {
+border: 2px solid black;
+margin:22px;
+}
+
+body, button h5{
+  font-style:serif;
+  font-family: "Times New Roman", Times, serif;
+  font-variant: small-caps;
+}
