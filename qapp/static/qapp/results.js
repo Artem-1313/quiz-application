@@ -10,15 +10,20 @@
 	const sendData = () =>{
 	elem.forEach(el => {
 
-	if (el.checked){
-	data[el.name] = el.value;
-	} else {
-	if (!data[el.name]) {
-                data[el.name] = null
-            }
-	}
+    if (!data[el.name]) {
+        data[el.name]=[null]
+      if (el.checked){
 
+        data[el.name] = [el.value]
+      }
+    } else {
+      if (el.checked){
 
+      data[el.name].push(el.value)
+
+      }
+    }
+console.log(data)
 	})
 
 	$.ajax({
@@ -26,6 +31,7 @@
 	 url: `${url}/quiz/test/`,
 	 data: data,
 	 success:function (response){
+	 console.log(data)
 	    quiz_form.style.display = 'none'
 	 //
         response.test.forEach(res =>{
@@ -57,7 +63,7 @@
 
         })// end response.test loop
 
-console.log(response.test)
+//console.log(response.test)
 
 //
 	 },

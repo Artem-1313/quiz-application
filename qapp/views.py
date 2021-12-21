@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from .forms import addQuiz
 from django.views.generic import ListView, DetailView
 from .models import *
@@ -41,20 +41,33 @@ def test(request):
     dict._mutable = True
     dict.pop('csrfmiddlewaretoken')
 
+    print(dict)
+
     result = []
+    score = 0
     for question, answers in dict.items():
 
-        for q in Question.objects.filter(question=question):
-            correct_ans=q.get_right_answer()
-            if answers == "":
-                result.append({question: {"not_answer": True, "correct_ans": correct_ans}})
+#question=question[:(len(question)-2)]
+        for q in Question.objects.filter(question=question[:(len(question)-2)]):
+            q_=question[:(len(question)-2)]
+            correct_ans = q.get_right_answer()
+            correct_ans_ = set(correct_ans)
+            ans = dict.getlist(question)
+            if '' in ans and len(ans)>1:
+                ans = ans[1:]
+            ans_ = set(ans)
+            print(ans_-correct_ans_)
 
-
+            if '' in ans:
+                result.append({q_: {"not_answer": True, "correct_ans": correct_ans}})
                 continue
-            if correct_ans == answers:
-                    result.append({question: {"is_right": True, "answer": answers,  "correct_ans":answers}})
+
+            if not (correct_ans_.symmetric_difference(ans_)):
+                    score += 1
+                    result.append({q_: {"is_right": True, "answer": ans,  "correct_ans":correct_ans,"score":score}})
+
             else:
-                    result.append({question: {"is_right": False, "answer": answers, "correct_ans": correct_ans }})
+                    result.append({q_: {"is_right": False, "answer": ans, "correct_ans": correct_ans }})
 
     print(result)
     return JsonResponse({"test": result})

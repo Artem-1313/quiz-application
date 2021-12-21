@@ -33,7 +33,7 @@ class Question(models.Model):
         return self.answers.all()
 
     def get_right_answer(self):
-        right_ans = ''.join([str(i) for i in self.answers.filter(is_right=True).all()])
+        right_ans = ([str(i) for i in self.answers.filter(is_right=True).all()])
 
         return right_ans
 
