@@ -17,25 +17,55 @@
 
 <form method="post" action="{% url 'test' %}" id="quiz-form">
 	{% csrf_token %}
-	
+
 {% for questions_answers in dict_questions_answers %}
 	{% for key,value in questions_answers.items %}
-		<div class="mb-2">
-			<b>Питання:</b><br>
-			{{ key }}
-		</div> 
-			<b>Варіанти відповідей:</b><br>
-			{% for a in value %}
-			<div>
 
-				<input type="checkbox" name="{{ key }}" id="{{ a }}" value="{{ a }}" class="ans">
+
+
+
+	<div class="mb-2">
+			<b>Питання:</b><br>
+
+			{{ key }}
+
+
+		    </div>
+
+
+
+
+			<b>Варіанти відповідей:</b><br>
+
+			{% for a in value %}
+
+			<div>
+				{% if key.type == '2' %}
+
+
+				  <input type="checkbox" name="{{ key }}" id="{{ a }}" value="{{ a }}" class="ans">
 					<label>{{ a }}</label>
-			</div>
-			
+
+
+				{% endif %}
+				{% if key.type == '1' %}
+					{% with vars="radio"  %}
+
+				  <input type="radio" name="{{ key }}"  value="{{ a }}" class="ans">
+					<label>{{ a }}</label>
+
+					{% endwith %}
+				{% endif %}
+		    </div>
+
 			{% endfor %}
+
+
 		<hr>
-		
+
+
 	{% endfor %}
+
 {% endfor %}
 
 <button type="submit" class="btn btn-primary">OK</button>
