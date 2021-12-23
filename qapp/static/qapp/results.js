@@ -6,7 +6,61 @@
 	data['csrfmiddlewaretoken'] = csrf[0].value
 	var quiz_form = document.getElementById('quiz-form');
 	var elem = [...document.getElementsByClassName('ans')];
+    var timer = document.getElementById("timer")
 
+    Timer=(t)=>{
+
+
+
+    var min;
+    min = t-1
+
+    var secDisplay;
+     var minDisplay;
+
+     var sec=60;
+     if (min < 10){
+      timer.innerHTML=`<b>0${min}:00</b>`
+     }
+     else{
+     timer.innerHTML=`<b>${min}:00</b>`
+
+     }
+
+
+
+
+    ttt = setInterval(()=>{
+      sec--
+    if (sec < 0) {
+      sec = 59
+      min--
+      }
+
+    if (sec < 10 ) { secDisplay = "0" + sec }
+    else {
+      secDisplay = sec
+    }
+    if (min < 10) {minDisplay = "0"+min}
+    else{
+      minDisplay = min
+      }
+    timer.innerHTML=`<b>${minDisplay}:${secDisplay}</b>`
+
+    if ((min == 0) && (sec == 0)){
+      setTimeout(()=>{
+    clearInterval(ttt)
+    alert("Times is gone")
+    sendData()
+      },250)
+
+
+    }
+
+    }, 500)
+
+    }
+Timer(1)
 	const sendData = () =>{
 	elem.forEach(el => {
 
@@ -70,6 +124,7 @@ console.log(data)
 	 error: function (err){console.log(err)}
 
 	})
+
 }
 	quiz_form.addEventListener('submit', e =>{
 	e.preventDefault()
